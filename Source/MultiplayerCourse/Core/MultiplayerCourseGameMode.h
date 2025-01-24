@@ -13,13 +13,4 @@ class AMultiplayerCourseGameMode : public AGameModeBase
 
 public:
 	AMultiplayerCourseGameMode();
-
-	UFUNCTION(BlueprintCallable)
-	void HostLanGame() const;
-
-	UFUNCTION(BlueprintCallable)
-	void JoinLanGame() const;
 };
-
-
-

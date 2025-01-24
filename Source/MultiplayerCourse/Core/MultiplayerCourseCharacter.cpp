@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -90,6 +91,27 @@ void AMultiplayerCourseCharacter::SetupPlayerInputComponent(UInputComponent* Pla
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+void AMultiplayerCourseCharacter::OpenLobby()
+{
+	if (UWorld* World = GetWorld())
+	{
+		World->ServerTravel("/Game/ThirdPerson/Maps/ThirdPersonMap?listen");
+	}
+}
+
+void AMultiplayerCourseCharacter::CallOpenLevel(const FString& Address)
+{
+	UGameplayStatics::OpenLevel(this, *Address);
+}
+
+void AMultiplayerCourseCharacter::CallClientTravel(const FString& Address)
+{
+	if (APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController())
+    {
+        PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+    }
 }
 
 void AMultiplayerCourseCharacter::Move(const FInputActionValue& Value)
